@@ -2,10 +2,7 @@
 setlocal enabledelayedexpansion
 
 ::config
-
-set EXTENSION_VIDEO=mp4
-
-
+set /p EXTENSION_VIDEO=Please input the 3 letters of the extension of the files to merge together. (ex: mp4 or mkv)  
 
 ::code
 
