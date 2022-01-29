@@ -11,9 +11,11 @@ set EXTENSION_VIDEO=mp4
 
 ::get parent folder to give name for the file
 for %%a in ("%~dp0\.") do set "parent=%%~nxa"
-set OUTPUT_VIDEO=%parent%.mp4
+set OUTPUT_VIDEO=%parent%.%EXTENSION_VIDEO%
 Title "Merging to %OUTPUT_VIDEO%"
 
+echo This will merge all %EXTENSION_VIDEO% files in this folder to %OUTPUT_VIDEO%"
+pause
 
 del /f run.cmd
 ECHO | set /p=ffmpeg >> run.cmd
