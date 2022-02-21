@@ -1,8 +1,5 @@
-# FFMPEG Tools
+# FFMPEG 
 
-ALL-2* are batch encoders. Put everything in ORIGINAL folder and it will encode to OUTPUT folder
+Program to run with ADMIN rights
 
-You must have ffmpeg compiled with correct libraries in your Windows PATH folder. If you don't, there is a choco installer for ffmpeg-full in the repo.
-
-
-The rest is drag and drop programs (drag a file on it to convert or encode it in the same directory as the source)
+It installs chocolatey, then the last version of ffmpeg-full

@@ -1,4 +1,4 @@
-# FFMPEG Tools
+# Recover
 
 This utility can recover video and audio streams from unfinalized MP4/MOV/3GP files without (or empty) header.
 You may got the unfinalized file in case of damaging camcorder during recording or such.
