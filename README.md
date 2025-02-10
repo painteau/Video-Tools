@@ -38,7 +38,7 @@ Ensure that **FFMPEG** is installed on your system. Some scripts might require a
 ### 🎬 Video Conversion
 Inside the **Convert/** folder, different scripts handle various formats. Some key scripts include:
 ```bash
-Convert/ALL-2/ALL-2-MP4-1080p60-6Mbits.cmd   # Convert videos to MP4 1080p at 60fps
+Convert/ALL-2/Convert.cmd   # Convert all videos to your choice of encoding
 Convert/Drag&Drop/iConvert-FLV-2-MP4.cmd    # Convert FLV to MP4 using drag & drop
 ```
 
