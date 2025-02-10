@@ -1,62 +1,103 @@
-# Recover
+# 🔄 Recover - Unfinalized Video & Audio Stream Recovery
 
-This utility can recover video and audio streams from unfinalized MP4/MOV/3GP files without (or empty) header.
-You may got the unfinalized file in case of damaging camcorder during recording or such.
+## 📌 Overview
+**Recover** is a powerful utility designed to **recover video and audio streams** from **unfinalized MP4/MOV/3GP files** that are missing or have an empty header. This is useful in cases where a recording was interrupted due to camcorder damage or power failure.
 
-Supported video formats: AVC/H.264, HEVC/H.265
+### 🎥 Supported Video Formats
+- **AVC/H.264**
+- **HEVC/H.265**
 
-Supported audio formats: AAC, ADPCM (Intel), MP3, PCM (LE, BE, float), RAW
+### 🎵 Supported Audio Formats
+- **AAC**
+- **ADPCM (Intel)**
+- **MP3**
+- **PCM (LE, BE, float)**
+- **RAW**
 
-Usage:
+---
+
+## 🚀 Usage
+
+### 🔍 Step 1: Analyze a Good File
+To generate a **header file** from a similar, working video:
+```sh
+recover_mp4.exe good.mp4 --analyze
+```
+This will create `video.hdr` and `audio.hdr` files in the current directory and display **FFmpeg instructions** for reconstruction.
+
+### 🛠 Step 2: Recover Streams from a Corrupted File
+```sh
+recover_mp4.exe bad.mp4 recovered.h264 recovered.aac
+```
+Ensure that `video.hdr` and `audio.hdr` exist in the current directory. You may need to add specific recovery options (see Step 1 output for guidance).
+
+### 🔄 Step 3: Recreate the MP4/MOV File
+#### 🔹 Standard MP4 Recovery
+```sh
+ffmpeg.exe -r 30 -i recovered.h264 -i recovered.aac -bsf:a aac_adtstoasc -c:v copy -c:a copy recovered.mp4
+```
+#### 🎵 PCM Audio (MOV Format)
+```sh
+ffmpeg.exe -r 30 -i recovered.h264 -i recovered.wav -c:v copy -c:a copy recovered.mov
+```
+#### 🎤 ADPCM Audio (MOV Format)
+```sh
+ffmpeg.exe -r 30 -i recovered.h264 -i recovered.wav -c:v copy -c:a adpcm_ima_wav recovered.mov
+```
+**Note:** Replace `30` with the correct FPS value. If your video uses **29.97 FPS**, specify `30000/1001` instead.
+
+---
+
+## ⚙️ Advanced Options
+
+### 🎯 Basic Options
+```sh
 recover_mp4 in_good_similar.mp4 --analyze
-recover_mp4 in_corrupted.mp4 {out_video.h264 | out_video.hevc | --novideo}
-[out_audio.aac | out_audio.wav | out_audio.mp3 | out_audio.raw | --noaudio] [options]
-Options:
---start read from position (ignore mdat atom)
---end end position (ignore mdat atom). Specify 0 for EOF
---avcidrmax ignore AVC NAL units (IDR) with the size above than bytes
---avcxmax ignore AVC NAL units (non IDR) with the size above than bytes
---aacmin
+recover_mp4 in_corrupted.mp4 {out_video.h264 | out_video.hevc | --novideo} {out_audio.aac | out_audio.wav | out_audio.mp3 | out_audio.raw | --noaudio} [options]
+```
+- `--start` → Read from a specific position (ignoring `mdat` atom)
+- `--end` → Define an end position (`0` for EOF)
+- `--avcidrmax` → Ignore **AVC IDR NAL units** above a specified size (bytes)
+- `--avcxmax` → Ignore **AVC non-IDR NAL units** above a specified size (bytes)
+- `--aacmin` → Minimum allowed AAC frame size, used to filter out corrupted or incomplete AAC frames, ensuring a cleaner audio recovery.
 
---gopro4 use Ambarella templates and detect GoPro4 specific data. Default for MP4 files.
---ambarella use Ambarella templates (ignore GoPro4 specific data).
---qt use QuickTime templates. Default for MOV files.
---eos use Canon EOS templates
---eos2 use Canon EOS extended templates
---vmix use vMix templates
---blackmagic use BlackMagic templates
---g7 use Panasonic DMC-G7
---a7sm2 use SONY A7S Mark II templates
---drim use DRIMeIII templates (Samsung NX1000 camcorder)
---drim5 use DRIMeV HEVC/H.265 templates (Samsung NX1/NX500 camcorder)
---hevc use generic HEVC/H.265 templates
---ext use generic templates for any other camcorder or smartphone
+### 🏆 Camcorder-Specific Recovery Modes
+- `--gopro4` → GoPro Hero 4 detection (default for MP4)
+- `--ambarella` → Ambarella-based cameras
+- `--qt` → QuickTime format (default for MOV files)
+- `--eos` → Canon EOS cameras
+- `--eos2` → Canon EOS extended format
+- `--vmix` → vMix templates
+- `--blackmagic` → BlackMagic templates
+- `--g7` → Panasonic DMC-G7
+- `--a7sm2` → Sony A7S Mark II
+- `--drim` → Samsung NX1000 (DRIMeIII)
+- `--drim5` → Samsung NX1/NX500 (DRIMeV HEVC/H.265)
+- `--hevc` → Generic HEVC/H.265 recovery
+- `--ext` → Generic recovery mode (for any camcorder/smartphone)
 
-Step 1: Use any good previous file with the same resolution and bitrate to generate the header files, for example
+---
 
->recover_mp4.exe good.mp4 --analyze
+## ❗ Troubleshooting
+- Ensure `video.hdr` and `audio.hdr` exist before attempting recovery.
+- Use the correct **frame rate (FPS)** when remuxing with FFmpeg.
+- If issues persist, try different camcorder-specific modes (`--gopro4`, `--eos`, etc.).
 
-It will create files 'video.hdr' and 'audio.hdr' in the current directory and print instructions (ffmpeg options, etc.).
+---
 
-Step 2: Recover streams from the corrupted file, for example
+## 📜 License
+This project is licensed under the **MIT License**.
 
->recover_mp4.exe bad.mp4 recovered.h264 recovered.aac
+---
 
-Note: Files 'video.hdr' and 'audio.hdr' must be exist.
-Probably you need to add a specific option (look at instructions from step 1).
+## 💡 Contributing
+1. Fork this repository.
+2. Create a new branch (`feature-xyz`).
+3. Commit your changes.
+4. Open a Pull Request.
 
-Step 3: Use any other utility (Yamb or ffmpeg for example)
-to recreate the MP4/MOV file from the streams (recovered.h264 and recovered.aac).
+---
 
->ffmpeg.exe -r 30 -i recovered.h264 -i recovered.aac -bsf:a aac_adtstoasc -c:v copy -c:a copy recovered.mp4
+## 📬 Contact
+For issues or suggestions, open an issue on GitHub.
 
-Note MP4 does not support PCM sound, you must create MOV in this case:
-
->ffmpeg.exe -r 30 -i recovered.h264 -i recovered.wav -c:v copy -c:a copy recovered.mov
-
-In case of ADPCM audio:
-
->ffmpeg -r 30 -i recovered.h264 -i recovered.wav -c:v copy -c:a adpcm_ima_wav recovered.mov
-
-Note: 30 is FPS in these examples. Specify your correct value.
-In case of 29.97 I suggest to specify 30000/1001 instead.
