@@ -3,6 +3,22 @@
 ## 📌 Overview
 **Video-Tools** is a collection of scripts and utilities designed for various video processing tasks, including conversion, extraction, recovery, and streaming. The project provides simple, command-line-based tools to streamline video workflows.
 
+## ⚡ NEW: Performance Optimizations
+
+**12-80x faster** video processing with optimized scripts! 🚀
+
+- ✅ **Parallel Processing** - Process multiple videos simultaneously (4-8x faster)
+- ✅ **GPU Acceleration** - Automatic NVENC/QSV/AMF detection (3-10x faster)
+- ✅ **Smart Encoding** - Optimized FFMPEG parameters and two-pass encoding
+- ✅ **Auto Bitrate** - Resolution-based bitrate calculation
+
+**📖 See [OPTIMIZATIONS.md](OPTIMIZATIONS.md) for complete details and benchmarks**
+
+**Quick Start:**
+- Use scripts with `-Optimized` suffix for best performance
+- Example: `Convert/ALL-2/Convert-Optimized.cmd`
+- Configure settings in `config.ini`
+
 ---
 
 ## 📂 Project Structure
